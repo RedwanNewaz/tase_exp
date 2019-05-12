@@ -56,6 +56,13 @@ void MotionPrimitives::goTo(double x, double y) {
 }
 
 void MotionPrimitives::publishGoal() {
+    /**@brief
+     * we need to repeat the publish msg several times with nap_rate intervals to be ensured that other nodes received it. \par
+     * While executing trajectory this thread take sleep using conditional variable -the performance is significantly better. \par
+     * This thread wakes up from the localizationCallback if the target is achieved.
+     */
+
+    std::unique_lock<mutex>lk(mu_);
     // convert setx, sety, yaw to PoseStamped msg
     geometry_msgs::PoseStamped msg;
     msg.header.frame_id ="/map";
@@ -74,10 +81,18 @@ void MotionPrimitives::publishGoal() {
         pub_.publish(msg);
         r.sleep();
     }
+    cond_.wait(lk,[&](){ return target_achieved;});
+    lk.unlock();
 
-
-    while(!target_achieved)
-        r.sleep();
+//    ros::Rate r(nap_rate_);
+//    for (int j = 0; j < repeat_; ++j) {
+//        pub_.publish(msg);
+//        r.sleep();
+//    }
+//
+//
+//    while(!target_achieved)
+//        r.sleep();
 
 }
 
@@ -101,7 +116,10 @@ void MotionPrimitives::localizationCallback(const geometry_msgs::TransformStampe
 
     float err =sqrt(pow((p.x-setX),2)+pow((p.y-setY),2));
     if(err<xy_tolarance_)
+    {
         target_achieved = true;
+        cond_.notify_one();
+    }
     else if(err<err_viz_)
         ROS_INFO("err %f", err);
 

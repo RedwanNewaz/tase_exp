@@ -6,13 +6,16 @@
 #define TASE_EXP_MOTIONPRIMITIVES_H
 
 
-
+#include <iostream>
+#include <condition_variable>
+#include <mutex>
 
 #include <ros/ros.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "StateEstimator.h"
 
+using namespace std;
 
 class MotionPrimitives: public StateEstimator {
     friend class TrajPlanner;
@@ -36,6 +39,8 @@ private:
     ros::Publisher pub_;
     ros::NodeHandle nh_;
     std::once_flag fix_origin_;
+    condition_variable cond_;
+    mutex mu_;
 
 
 };

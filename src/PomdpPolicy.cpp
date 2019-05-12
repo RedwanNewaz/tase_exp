@@ -195,21 +195,6 @@ bool PolicyExecution::generate() {
         PomdpPolicy::append(&pi,policy[i],belief[i]);
     }
 
-    PomdpPolicy * PI =pi;
-    QPoint point(-1,-1);
-    while (!PI->isTerminal())
-    {
-        PI->printRobotState();
-        auto new_point = PI->getState();
-        if(new_point != point)
-        {
-            trajectory_.push(new_point);
-            point = new_point;
-        }
-
-        PI = PI->next;
-    }
-
     return true;
 }
 
