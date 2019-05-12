@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/redwan/ros/melodic/dev/src/tase_exp/cmake-build-debug/devel/setup.sh

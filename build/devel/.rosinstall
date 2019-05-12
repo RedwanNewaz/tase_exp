@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/redwan/catkin_ws/src/tase_exp/build/devel/setup.sh

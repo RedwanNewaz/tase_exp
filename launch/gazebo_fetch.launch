@@ -1,0 +1,15 @@
+<launch>
+<!-- start gazebo without gui -->
+    <include file="$(find test_fetch_simulation_bringup)/launch/full.launch">
+      <!-- set a private parameter for the node -->
+      <arg name="world_name" value="move_base_demo_fetch.sdf" />
+      <arg name="prepare_robot_pick_place" value= "false"/>
+      <arg name="mapping" value= "true"/>
+      <arg name="vicon_bridge_params_file" value= "move_base_pick_place_gmapping_localization.yaml"/>
+      <arg name="moveit" value= "true"/>
+      <arg name="gui" value="false" />
+    </include>
+    <!-- <include file="$(find test_fetch_common_bringup)/launch/move_base.launch">
+        <arg name="sim_file" value="_sim" />
+    </include> -->
+</launch>
