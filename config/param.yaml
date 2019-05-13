@@ -1,0 +1,16 @@
+grid_size:
+  row: 4
+  col: 3
+  len: 1.5
+policy:
+  policy_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/policy.txt"
+  belief_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/belief.txt"
+  test_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/corridor_test_11"
+topic_pub:
+  vicon: "/vicon/fetch/fetch"
+  goal: "/fetch_move_base_planner/query_goal"
+  repeat: 3
+move_base:
+  xy_tolarance: 0.2
+  pitch: 0.62
+  nap_rate: 5

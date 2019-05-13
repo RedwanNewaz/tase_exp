@@ -11,11 +11,23 @@ MotionPrimitives::MotionPrimitives() {
     nh_.getParam("/tase/topic_pub/goal", topic);
 
     nh_.getParam("/tase/move_base/xy_tolarance", xy_tolarance_);
-    nh_.getParam("/tase/move_base/err_viz", err_viz_);
+    nh_.getParam("/tase/move_base/pitch", pitch_);
     nh_.getParam("/tase/move_base/nap_rate", nap_rate_);
 
     setX = setY = yaw = 0.0;
     pub_ = nh_.advertise<geometry_msgs::PoseStamped>(topic, 1000);
+
+    look_[NORTH]= 0;
+    look_[SOUTH]= M_PI;
+    look_[WEST]= M_PI_2;
+    look_[EAST]= -M_PI_2;
+
+    std::string action_name = "head_controller/point_head";
+    point_head_action_client_.reset(new point_head_action_client_t(action_name, true));
+    if (!point_head_action_client_->waitForServer(ros::Duration(5.0)))
+        ROS_ERROR("%s may not be connected.", action_name.c_str());
+
+
 
 }
 
@@ -42,15 +54,43 @@ void MotionPrimitives::goTo(double x, double y) {
     setY = y ;
 
     double dist = sqrt(dx*dx+dy*dy);
-    if(dist<1)
+    if(dist<0.2)
     {
         ROS_WARN("ignoring current request");
         return;
     }
 
     ROS_INFO("Robot base target yaw: %f", yaw);
-    publishGoal();
     target_achieved = false;
+    publishGoal();
+
+
+
+
+
+}
+
+void MotionPrimitives::lookAt(int z) {
+
+    ros::Rate r(1/float(nap_rate_));
+    r.sleep();
+
+    OBS_TYPE u = static_cast<OBS_TYPE >(z);
+    float q = look_[u];
+    control_msgs::PointHeadGoal point_head_goal;
+    point_head_goal.target.header.stamp = ros::Time::now();
+    point_head_goal.target.header.frame_id = "base_link";
+    point_head_goal.target.point.x = 0;
+    point_head_goal.target.point.y = q;
+    point_head_goal.target.point.z = M_PI_2*pitch_;
+    point_head_goal.min_duration = ros::Duration(1.0);
+
+    point_head_action_client_->sendGoal(point_head_goal);
+    bool result = point_head_action_client_->waitForResult(ros::Duration(5.0));
+    if(!result) lookAt(z);
+    if(u != NORTH) lookAt(NORTH);
+
+
 
 
 }
@@ -81,7 +121,7 @@ void MotionPrimitives::publishGoal() {
         pub_.publish(msg);
         r.sleep();
     }
-    cond_.wait(lk,[&](){ return target_achieved;});
+    cond_.wait(lk,[=]{ return target_achieved;});
     lk.unlock();
 
 //    ros::Rate r(nap_rate_);
@@ -120,7 +160,7 @@ void MotionPrimitives::localizationCallback(const geometry_msgs::TransformStampe
         target_achieved = true;
         cond_.notify_one();
     }
-    else if(err<err_viz_)
+    else if(err<pitch_)
         ROS_INFO("err %f", err);
 
 

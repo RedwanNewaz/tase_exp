@@ -1,5 +1,5 @@
 <launch>
      <node pkg="tase_exp" type="tase_exp_node" name="tase" >
-     <rosparam command="load" file="param.yaml" />
+     <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />
      </node>
 </launch>

@@ -268,6 +268,7 @@ void PolicyExecution::run() {
     //TODO - create visulization class for showing gloabl trajectory
 
     // TODO - show robot tracking trajectory
+    char *OBS_STR[]={"north","south","west","east"};
 
 
     int step_index =-1;
@@ -285,8 +286,10 @@ void PolicyExecution::run() {
                 break;
             }
             case LOOK:{
-                qDebug()<< "look at " <<point;
+                qDebug()<< "look at " <<OBS_STR[pi->action_-5];
+                move_->lookAt(pi->action_);
                 obstacleVisualization(pi);
+
 
                 break;
 
