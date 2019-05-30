@@ -1,5 +1,25 @@
 <launch>
-     <node pkg="tase_exp" type="tase_exp_node" name="tase" >
+       	<!-- Start Gazebo simulation -->
+  	<include file="$(find test_fetch_simulation_bringup)/launch/full.launch" >
+  		<arg name="world_name" value="kitchen.sdf" />
+  		<arg name="prepare_robot_pick_place" value="false" />
+               <arg name="gui" value="true"/>
+               <arg name="mapping" value="true"/>
+               <arg name="vicon_bridge" value="true"/>
+               <arg name="vicon_bridge_params_file" value="move_base_pick_place_gmapping_localization.yaml"/>
+               <arg name="moveit" value="true"/>
+  	</include>
+
+    <!-- Start Move Base -->
+        <include file="$(find test_fetch_common_bringup)/launch/move_base.launch" >
+                <arg name="sim_file" value="_sim"/>
+        </include>
+
+    <!-- Start RViz -->
+    <include file="$(find test_fetch_desktop_bringup)/launch/rviz.launch" />
+
+
+     <node pkg="tase_exp" type="tase_exp_node" name="tase">
      <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />
      </node>
 </launch>

@@ -179,9 +179,9 @@ PolicyExecution::PolicyExecution(MotionPrimitives *move) : TrajPlanner(move) {
     nh.getParam("/tase/policy/policy_file", policy_file);
     nh.getParam("/tase/policy/belief_file", belief_file);
     nh.getParam("/tase/policy/test_file", test_file);
-    qDebug()<<policy_file.c_str();
-    qDebug()<<belief_file.c_str();
-    qDebug()<<test_file.c_str();
+    // qDebug()<<policy_file.c_str();
+    // qDebug()<<belief_file.c_str();
+    // qDebug()<<test_file.c_str();
 
 }
 
@@ -216,7 +216,7 @@ void PolicyExecution::read_test_file() {
         test_reader.close();
     }
 
-    qDebug()<<ground_truth;
+//    // qDebug()<<ground_truth;
 
 }
 
@@ -279,14 +279,16 @@ void PolicyExecution::run() {
         switch(action)
         {
             case MOVE:{
-                qDebug()<< "move to " <<point;
+                // qDebug()<< "move to " <<point;
+                ROS_INFO("move to [%d, %d]", point.x(),point.y());
                 move_->goTo(point.x(),point.y());
                 obstacleVisualization(pi);
 
                 break;
             }
             case LOOK:{
-                qDebug()<< "look at " <<OBS_STR[pi->action_-5];
+                // qDebug()<< "look at " <<OBS_STR[pi->action_-5];
+                ROS_INFO_STREAM("look at "<<OBS_STR[pi->action_-5]);
                 move_->lookAt(pi->action_);
                 obstacleVisualization(pi);
 
@@ -295,8 +297,8 @@ void PolicyExecution::run() {
 
             }
             case PICK:{
-                qDebug()<< "pick up at " <<point;
-
+                // qDebug()<< "pick up at " <<point;
+                ROS_INFO("pick up at [%d, %d]", point.x(),point.y());
                 move_->goTo(point.x(),point.y());
                 obstacleVisualization(pi);
                 break;
@@ -311,7 +313,7 @@ void PolicyExecution::run() {
 
     }
 
-    qDebug()<<"Planner thread terminated";
+    // qDebug()<<"Planner thread terminated";
 }
 
 PolicyExecution::ACT_TYPE PolicyExecution::action_type(int a) {

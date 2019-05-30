@@ -12,6 +12,8 @@
 #include <cassert>
 #include <sstream>
 #include <thread>
+#include <QDebug>
+#include <QtCore>
 #include "TrajPlanner.h"
 
 
