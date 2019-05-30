@@ -385,5 +385,20 @@
       <pose frame=''>4.28659 5.06039 0 0 -0 0</pose>
       <enable_wind>1</enable_wind>
     </model>
+    <include>
+      <uri>model://obstacle_sim</uri>
+      <name>Obstacle1</name>
+      <pose>1.0 1.0 0.55 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://obstacle_sim</uri>
+      <name>Obstacle2</name>
+      <pose>1.0 6.0 0.55 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://obstacle_sim</uri>
+      <name>Obstacle3</name>
+      <pose>1.0 10.0 0.55 0 0 0</pose>
+    </include>
   </world>
 </sdf>
