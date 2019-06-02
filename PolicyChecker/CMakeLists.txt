@@ -3,17 +3,13 @@ project(PolicyChecker)
 
 set(CMAKE_CXX_STANDARD 11)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-add_executable(PolicyChecker main.cpp
-        src/PolicyReader.cpp
-        include/PolicyReader.h
-        src/ValidatePolicy.cpp
-        include/ValidatePolicy.h
-        src/PomdpPolicy.cpp
-        include/PomdpPolicy.h)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+find_package(Checker REQUIRED)
+add_executable(PolicyChecker
+        main.cpp
+        )
 
-target_link_libraries(${PROJECT_NAME} z3)
+target_link_libraries(${PROJECT_NAME} Checker)
 
 ## Find includes in corresponding build directories
 #set(CMAKE_INCLUDE_CURRENT_DIR ON)
