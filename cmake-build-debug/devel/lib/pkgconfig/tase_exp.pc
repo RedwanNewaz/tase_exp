@@ -1,8 +1,0 @@
-prefix=/home/redwan/ros/melodic/dev/src/tase_exp/cmake-build-debug/devel
-
-Name: tase_exp
-Description: Description of tase_exp
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/redwan/ros/melodic/dev/src/tase_exp/cmake-build-debug/devel/lib 
-Requires: 

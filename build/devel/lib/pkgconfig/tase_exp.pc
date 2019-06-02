@@ -1,8 +1,0 @@
-prefix=/home/redwan/catkin_ws/src/tase_exp/build/devel
-
-Name: tase_exp
-Description: Description of tase_exp
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/redwan/catkin_ws/src/tase_exp/build/devel/lib 
-Requires: 
