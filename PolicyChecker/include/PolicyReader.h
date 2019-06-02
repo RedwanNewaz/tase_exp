@@ -11,6 +11,7 @@
 #include <fstream>
 #include <list>
 #include <sstream>
+#include <iterator>
 #include <unordered_map>
 #include <memory>
 #include <algorithm>

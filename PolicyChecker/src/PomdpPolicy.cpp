@@ -112,6 +112,7 @@ void BinaryTreeSort::createTree(PolicyTree &policy)
         for(auto &belief:pi)
         {
 
+            if(belief->b_indx<0)continue;
             auto b = belief->robot;
             b.prob = belief->action;
             if(first)

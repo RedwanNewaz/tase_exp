@@ -3,7 +3,7 @@
 //
 
 #include "../include/PolicyReader.h"
-
+#include <sstream>
 PolicyReader::PolicyReader(const string &dirname) : __dirname(dirname) {
     assert(!dirname.empty() && "no directory found" );
     __policyFile = dirname+"/policy.txt";

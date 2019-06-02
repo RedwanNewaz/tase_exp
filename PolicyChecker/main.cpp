@@ -2,7 +2,6 @@
 #include <unordered_map>
 #include <vector>
 #include <iterator>
-#include "z3++.h"
 #include "include/PolicyReader.h"
 #include "include/ValidatePolicy.h"
 #include "include/PomdpPolicy.h"

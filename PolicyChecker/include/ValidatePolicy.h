@@ -12,6 +12,7 @@
 #include <iterator>
 
 class ValidatePolicy {
+    typedef vector<pair<int,int>> unsatVec;
 public:
     ValidatePolicy(){};
     ValidatePolicy(const beliefstruct &m_goal, const vector<beliefstruct> &m_obstacles);
@@ -20,7 +21,7 @@ public:
     std::tuple<bool,PolicyTree> GoalConstraint(PolicyTree& policy, beliefstruct Goal,  bool refinement = false);
 private:
     z3::context ctx;
-
+    int pi_size_;
     const z3::expr x =ctx.int_const("x");
     const z3::expr y =ctx.int_const("y");
     const z3::expr Gx =ctx.int_const("Gx");
@@ -30,6 +31,9 @@ private:
 
 protected:
     void PolicyRefinement(z3::model &m, PolicyTree &pi);
+    unsatVec getList(z3::model &m);
+
+    void setInValidPolicy(unsatVec& indx, PolicyTree &pi);
 
 };
 
