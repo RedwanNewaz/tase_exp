@@ -4,7 +4,7 @@
 #include <iterator>
 #include "include/PolicyReader.h"
 #include "include/ValidatePolicy.h"
-#include "include/PomdpPolicy.h"
+#include "include/PomdpPolicyChecker.h"
 
 //#define GUI true
 #define SORT_POLICY true
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     ValidatePolicy check(Goal,Gt);
     check.GetValidPolicy(reader.Policy);
 
-    PomdpPolicy *PI;
+    PomdpPolicyChecker *PI;
 
 #ifdef SORT_POLICY
     BinaryTreeSort BTS(b_0);

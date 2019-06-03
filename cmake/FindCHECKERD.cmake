@@ -12,10 +12,10 @@ set(POLICY_CHECKER_INCLUDE
         ${ROOT_PATH}/include/PomdpPolicy.h
         )
 
-## set z3 include directory and lib path
-#include_directories(/usr/local/include)
-#link_directories(/usr/local/lib)
-#
-#add_library(Checker ${POLICY_CHECKER_LIB})
-#target_link_libraries(Checker z3)
-#target_include_directories(Checker PUBLIC ${POLICY_CHECKER_INCLUDE})
+# set z3 include directory and lib path
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
+
+add_library(CHECKERD ${POLICY_CHECKER_LIB})
+target_link_libraries(CHECKERD z3)
+target_include_directories(CHECKERD PUBLIC ${POLICY_CHECKER_INCLUDE})

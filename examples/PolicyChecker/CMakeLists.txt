@@ -1,18 +1,32 @@
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
-find_package(Checker REQUIRED)
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+#find_package(Checker REQUIRED)
 #message(WARNING ${PROJECT_SOURCE_DIR})
-add_executable(PolicyChecker
-        main.cpp
-        )
 
-include_directories(/usr/local/include
-        ${POLICY_CHECKER_INCLUDE}
-        )
+
 link_directories(/usr/local/lib)
 
+set(HEADERS
+        include/PolicyReader.h
+        include/PomdpPolicyChecker.h
+        include/ValidatePolicy.h
+        )
+set(SOURCES
+        src/PolicyReader.cpp
+        src/PomdpPolicyChecker.cpp
+        src/ValidatePolicy.cpp
+        )
+include_directories(
+        /usr/local/include
+        ${PROJECT_SOURCE_DIR}/examples/PolicyChecker/include
 
-target_link_libraries(PolicyChecker ${POLICY_CHECKER_LIB})
+)
+add_executable(PolicyChecker
+        main.cpp ${SOURCES} ${HEADERS}
+        )
+
+
+#target_link_libraries(PolicyChecker ${POLICY_CHECKER_LIB})
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

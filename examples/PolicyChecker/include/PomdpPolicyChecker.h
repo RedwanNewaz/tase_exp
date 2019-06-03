@@ -11,25 +11,25 @@
 #include <string>
 #include "PolicyReader.h"
 using namespace std;
-class PomdpPolicy;
-inline void printPolicy(PomdpPolicy *n){
+class PomdpPolicyChecker;
+inline void printPolicy(PomdpPolicyChecker *n){
 
 }
 
-class PomdpPolicy {
+class PomdpPolicyChecker {
 
 public:
-    PomdpPolicy(int action, const beliefstruct &belief);
+    PomdpPolicyChecker(int action, const beliefstruct &belief);
     void setObstacleBelief(vector<beliefstruct>&obs);
-    static void append( PomdpPolicy **head_ref, int action, const beliefstruct &belief, vector<beliefstruct>&obs);
+    static void append( PomdpPolicyChecker **head_ref, int action, const beliefstruct &belief, vector<beliefstruct>&obs);
 
-    friend ostream &operator<<(ostream &os, const PomdpPolicy &Nodeicy);
+    friend ostream &operator<<(ostream &os, const PomdpPolicyChecker &Nodeicy);
 
     beliefstruct getState();
     vector<beliefstruct> getObstaclesBelief();
     int getAction();
     string nextActionName();
-    PomdpPolicy *next;
+    PomdpPolicyChecker *next;
 private:
     int action;
     beliefstruct belief;
@@ -60,7 +60,7 @@ public:
     BinaryTreeSort(const beliefstruct &b_0);
     void addNode(Node *muTree, beliefstruct b, vector<beliefstruct>&obs);
     void createTree(PolicyTree &policy);
-    PomdpPolicy *getLinkedList();
+    PomdpPolicyChecker *getLinkedList();
     void printPolicy();
 protected:
     void sortTree(Node *mu);

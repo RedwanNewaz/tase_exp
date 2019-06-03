@@ -2,7 +2,7 @@
 // Created by Redwan Newaz on 2019-05-31.
 //
 
-#include "../include/ValidatePolicy.h"
+#include "ValidatePolicy.h"
 
 /** *
  * @param m_goal

@@ -2,9 +2,9 @@
 // Created by Redwan Newaz on 2019-06-01.
 //
 
-#include "../include/PomdpPolicy.h"
+#include "../include/PomdpPolicyChecker.h"
 
-PomdpPolicy::PomdpPolicy(int action, const beliefstruct &belief) : action(action), belief(belief) {
+PomdpPolicyChecker::PomdpPolicyChecker(int action, const beliefstruct &belief) : action(action), belief(belief) {
     ACTION_MEANING[1]="Move north";
     ACTION_MEANING[2]="Move south";
     ACTION_MEANING[3]="Move west ";
@@ -17,15 +17,15 @@ PomdpPolicy::PomdpPolicy(int action, const beliefstruct &belief) : action(action
     ACTION_MEANING[10]="Pick up right hand";
 }
 
-beliefstruct PomdpPolicy::getState() {
+beliefstruct PomdpPolicyChecker::getState() {
     return belief;
 }
 
-int PomdpPolicy::getAction() {
+int PomdpPolicyChecker::getAction() {
     return action;
 }
 
-ostream &operator<<(ostream &os, const PomdpPolicy &policy) {
+ostream &operator<<(ostream &os, const PomdpPolicyChecker &policy) {
 
 
 
@@ -33,24 +33,24 @@ ostream &operator<<(ostream &os, const PomdpPolicy &policy) {
     return os;
 }
 
-void PomdpPolicy::setObstacleBelief(vector<beliefstruct> &obs) {
+void PomdpPolicyChecker::setObstacleBelief(vector<beliefstruct> &obs) {
     std::copy(obs.begin(), obs.end(),back_inserter(obstacles));
 
 }
 
-vector<beliefstruct> PomdpPolicy::getObstaclesBelief() {
+vector<beliefstruct> PomdpPolicyChecker::getObstaclesBelief() {
     return obstacles;
 }
 
-string PomdpPolicy::nextActionName() {
+string PomdpPolicyChecker::nextActionName() {
     return ACTION_MEANING[action];
 }
 
-void PomdpPolicy::append(PomdpPolicy **head_ref, int action, const beliefstruct &belief, vector<beliefstruct>&obs) {
+void PomdpPolicyChecker::append(PomdpPolicyChecker **head_ref, int action, const beliefstruct &belief, vector<beliefstruct>&obs) {
     /* 1. allocate PolicyTree */
-    PomdpPolicy* new_PolicyTree = new PomdpPolicy(action,belief);
+    PomdpPolicyChecker* new_PolicyTree = new PomdpPolicyChecker(action,belief);
     new_PolicyTree->setObstacleBelief(obs);
-    PomdpPolicy *last = *head_ref;  /* used in step 5*/
+    PomdpPolicyChecker *last = *head_ref;  /* used in step 5*/
 
 
     /* 3. This new PolicyTree is going to be the last PolicyTree, so make next of
@@ -150,14 +150,14 @@ void BinaryTreeSort::printPolicy()
         cout << mu->data <<endl;
 }
 
-PomdpPolicy* BinaryTreeSort::getLinkedList()
+PomdpPolicyChecker* BinaryTreeSort::getLinkedList()
 {
-    PomdpPolicy *PI=NULL;
+    PomdpPolicyChecker *PI=NULL;
 
     for(auto &pi:filterdTree)
     {
-        PomdpPolicy::append(&PI,pi->data.prob,pi->data,pi->obstacles);
-//        auto load = new PomdpPolicy(pi->data.prob,pi->data);
+        PomdpPolicyChecker::append(&PI,pi->data.prob,pi->data,pi->obstacles);
+//        auto load = new PomdpPolicyChecker(pi->data.prob,pi->data);
 //        load->setObstacleBelief(pi->obstacles);
 //        load->next = PI;
 //        PI    = load;

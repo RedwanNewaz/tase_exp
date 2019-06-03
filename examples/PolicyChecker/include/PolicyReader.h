@@ -135,7 +135,7 @@ public:
     vector<beliefstruct>obstacles;
     int b_indx;
     int action;
-
+    CPtrs getPtr();
     friend ostream &operator<<(ostream &os, const ConditionalPlan &plan);
 
 protected:

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.1)
 project(tase_exp)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++17)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -22,6 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
   fetch_move_base_msgs
 
 )
+add_subdirectory(examples/PolicyChecker)
 
 include_directories(include)
 
@@ -35,13 +36,14 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-add_subdirectory(examples/PolicyChecker)
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 find_package(Qt5Core REQUIRED)
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+
 )
 
 ## Declare a C++ library
@@ -50,11 +52,16 @@ include_directories(
 # )
 
 ## Add cmake target dependencies of the library
-add_subdirectory(examples/ExecutePolicy)
+#add_subdirectory(examples/ExecutePolicy)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+#
+#find_package(CHECKERD REQUIRED)
+#include_directories(  ${POLICY_CHECKER_INCLUDE})
+#link_directories(/usr/local/lib)
+
  add_executable(${PROJECT_NAME}_node
          tase_exp_node.cpp
          src/MotionPrimitives.cpp
@@ -81,5 +88,6 @@ add_subdirectory(examples/ExecutePolicy)
  target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
          Qt5::Core
+#         ${POLICY_CHECKER_LIB}
  )
 
