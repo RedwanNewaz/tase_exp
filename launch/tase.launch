@@ -3,7 +3,7 @@
   	<include file="$(find test_fetch_simulation_bringup)/launch/full.launch" >
   		<arg name="world_name" value="kitchen.sdf" />
   		<arg name="prepare_robot_pick_place" value="false" />
-               <arg name="gui" value="true"/>
+               <arg name="gui" value="false"/>
                <arg name="mapping" value="true"/>
                <arg name="vicon_bridge" value="true"/>
                <arg name="vicon_bridge_params_file" value="move_base_pick_place_gmapping_localization.yaml"/>

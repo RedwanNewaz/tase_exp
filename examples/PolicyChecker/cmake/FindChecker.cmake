@@ -1,5 +1,5 @@
 
-set(ROOT_PATH ${PROJECT_SOURCE_DIR})
+set(ROOT_PATH ../../..)
 
 set(POLICY_CHECKER_LIB
         ${ROOT_PATH}/src/PolicyReader.cpp

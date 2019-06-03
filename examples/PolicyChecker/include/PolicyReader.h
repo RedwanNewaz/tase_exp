@@ -130,7 +130,7 @@ typedef std::shared_ptr<ConditionalPlan> CPtrs;
 class ConditionalPlan: public enable_shared_from_this<ConditionalPlan>{
 public:
     ConditionalPlan(vector<string>&b, vector<string>&pi);
-    CPtrs getPtr();
+
     beliefstruct robot;
     vector<beliefstruct>obstacles;
     int b_indx;

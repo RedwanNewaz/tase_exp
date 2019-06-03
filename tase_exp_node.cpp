@@ -16,13 +16,10 @@ int main(int argc, char *argv[]){
     ros::init(argc,argv,"TASE_EXT");
     ROS_INFO("TASE EXPERIMENT STARTED");
     ros::NodeHandle nh;
-//    int row, col;
-//    float len;
+
     std::string topic_name;
     nh.getParam("/tase/topic_pub/vicon", topic_name);
-//    nh.getParam("/tase/grid_size/row", row);
-//    nh.getParam("/tase/grid_size/col", col);
-//    nh.getParam("/tase/grid_size/len", len);
+
 //
     MotionPrimitives *move = new MotionPrimitives();
     PolicyExecution planner(move);

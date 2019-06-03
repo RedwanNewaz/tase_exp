@@ -3,9 +3,9 @@ grid_size:
   col: 3
   len: 1.5
 policy:
-  policy_file: "/home/ar103/ros/kinetic/system/src/tase_exp/result/policy.txt"
-  belief_file: "/home/ar103/ros/kinetic/system/src/tase_exp/result/belief.txt"
-  test_file: "/home/ar103/ros/kinetic/system/src/tase_exp/result/corridor_test_11"
+  policy_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/policy.txt"
+  belief_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/belief.txt"
+  test_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/corridor_test_11"
 topic_pub:
   vicon: "/vicon/fetch/fetch"
   goal: "/fetch_move_base_planner/query_goal"
