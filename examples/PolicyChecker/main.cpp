@@ -85,9 +85,5 @@ int main(int argc, char *argv[]) {
         if(result == 4194304)break;
     }
 
-
-
-
-
     return 0;
 }

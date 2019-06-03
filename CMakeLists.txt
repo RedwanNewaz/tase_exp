@@ -3,7 +3,7 @@ project(tase_exp)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++17)
-
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -43,7 +43,7 @@ find_package(Qt5Core REQUIRED)
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
-
+ ${POLICY_CHECKER_INCLUDE}
 )
 
 ## Declare a C++ library
@@ -85,9 +85,11 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+
  target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
-         Qt5::Core
-#         ${POLICY_CHECKER_LIB}
+   Qt5::Core
+   ${POLICY_CHECKER_LIB}
+         z3
  )
 

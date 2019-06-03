@@ -1,7 +1,11 @@
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
-#find_package(Checker REQUIRED)
+
+#find_package(Checker)
+#add_executable(PolicyChecker main.cpp )
+#target_link_libraries(PolicyChecker Checker ${POLICY_CHECKER_LIB})
+
 #message(WARNING ${PROJECT_SOURCE_DIR})
+
 
 
 link_directories(/usr/local/lib)
@@ -26,8 +30,6 @@ add_executable(PolicyChecker
         )
 
 
-#target_link_libraries(PolicyChecker ${POLICY_CHECKER_LIB})
-
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
@@ -42,3 +44,4 @@ get_target_property(QtCore_location Qt5::Core LOCATION)
 target_link_libraries(PolicyChecker  Qt5::Core Qt5::Widgets
         z3
         )
+
