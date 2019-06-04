@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="tf" type="static_transform_publisher" name="tase" args="1 0 0 0 0 0 1 link1_parent link1 100" >
+        <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />
+    </node>
+</launch>

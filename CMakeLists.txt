@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.1)
 project(tase_exp)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++17)
+add_compile_options(-std=c++11)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -20,13 +20,26 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   visualization_msgs
   fetch_move_base_msgs
+  actionlib_msgs REQUIRED
 
 )
-add_subdirectory(examples/PolicyChecker)
 
-include_directories(include)
+
+include_directories(include
+        /home/redwan/ros/melodic/dev/devel/include
+
+        )
+
+add_action_files(
+        DIRECTORY action
+        FILES fetch.action
+)
+generate_messages(
+        DEPENDENCIES actionlib_msgs std_msgs  # Or other packages containing msgs
+)
 
 catkin_package(
+        CATKIN_DEPENDS actionlib_msgs
 #  INCLUDE_DIRS include
 #  LIBRARIES tase_exp
 #  CATKIN_DEPENDS control_msgs geometric_shapes geometry_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface pluginlib tf2 tf2_eigen tf2_ros
@@ -72,7 +85,7 @@ include_directories(
          include/VizTraj.h
          src/PomdpPolicy.cpp
          include/PomdpPolicy.h
-         )
+         src/FetchAction.cpp include/FetchAction.h src/BeliefState.cpp include/BeliefState.h)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -85,7 +98,8 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-
+add_subdirectory(examples/PolicyChecker)
+add_subdirectory(examples/ExecutePolicy)
  target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
    Qt5::Core

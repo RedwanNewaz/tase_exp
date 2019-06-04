@@ -43,5 +43,6 @@ find_package(Qt5Core)
 get_target_property(QtCore_location Qt5::Core LOCATION)
 target_link_libraries(PolicyChecker  Qt5::Core Qt5::Widgets
         z3
+        ${catkin_LIBRARIES}
         )
 

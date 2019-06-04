@@ -19,7 +19,8 @@
     <include file="$(find test_fetch_desktop_bringup)/launch/rviz.launch" />
 
 
-     <node pkg="tase_exp" type="tase_exp_node" name="tase">
-     <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />
-     </node>
+<!--     <node pkg="tase_exp" type="tase_exp_node" name="tase">-->
+<!--     <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />-->
+<!--     </node>-->
+<!--    <node pkg="tase_exp" type="PolicyChecker" name="PolicyChecker"/>-->
 </launch>

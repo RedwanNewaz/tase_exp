@@ -20,29 +20,12 @@
 class StateEstimator {
 
 public:
-    StateEstimator(){
-        target_achieved = false;
-        robot_position.resize(3);
-        robot_position[0] = robot_position[1] = robot_position[2] =0.0;
+    StateEstimator();
+    std::vector<double> getCurrentBasePose();
 
-    }
-    std::vector<double> getCurrentBasePose(){
-        return robot_position;
-    }
+    tf2::Quaternion getOrientation(double yaw);
 
-
-    tf2::Quaternion getOrientation(double yaw){
-        tf2::Quaternion q;
-        q.setRPY(0.0, 0.0, yaw);
-        q.normalize();
-        ROS_INFO_STREAM(yaw<<"-->"<<q.getAxis());
-        return q;
-    }
-    geometry_msgs::Quaternion getGoalOrientation(){
-        return robot_orientation;
-    }
-
-
+    geometry_msgs::Quaternion getGoalOrientation();
 
 
 protected:
@@ -50,9 +33,6 @@ protected:
     std::vector<double> robot_position;
     geometry_msgs::Quaternion robot_orientation;
     bool target_achieved;
-
-
-
     geometry_msgs::TransformStamped base_to_map_tf_;
     std::mutex mu;
 

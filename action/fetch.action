@@ -1,0 +1,8 @@
+#action definition
+int32 act
+---
+#result definition
+int32[] coord
+---
+#feedback
+bool result

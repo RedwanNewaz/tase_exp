@@ -1,5 +1,6 @@
-<launch> 
- <node pkg="tase_exp" type="tase_exp_node" name="tase">
-     <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />
-</node>
+<launch>
+    <node pkg="tase_exp" type="tase_exp_node" name="tase" output="screen">
+        <rosparam command="load" file="$(find tase_exp)/config/param.yaml" />
+    </node>
+    <node pkg="tase_exp" type="PolicyChecker" name="PolicyChecker" output="screen"/>
 </launch>
