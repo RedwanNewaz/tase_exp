@@ -9,118 +9,11 @@
 #include "include/PolicyReader.h"
 #include "include/ValidatePolicy.h"
 #include "include/PomdpPolicyChecker.h"
-
-#include <ros/ros.h>
-#include <actionlib/client/simple_action_client.h>
-#include <actionlib/client/terminal_state.h>
-#include "tase_exp/fetchAction.h"
-#include "geometry_msgs/PoseArray.h"
-#include "geometry_msgs/Pose.h"
-#include "geometry_msgs/Point.h"
-
-//ros::Publisher pub;
-//#define GUI true
-#define SORT_POLICY true
+#include "FetchActionClient.h"
 
 #ifdef GUI
 #include <QApplication>
-#include <QtCore>
-#include <QMessageBox>
-
-int popUpMsg(beliefstruct robot, string act)
-{
-    QMessageBox msgBox;
-    int window_w(1920),window_h(1080);
-    msgBox.move((window_w-msgBox.width())/2,(window_h-msgBox.height())/2);
-    QString x=QString::number(robot.x),y=QString::number(robot.y);
-    QString msg = "Loc: ("+x+","+y+")";
-    msgBox.setText("Continue Next Motion? [ "+QString(act.c_str())+"]");
-    msgBox.setInformativeText(msg);
-    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    return msgBox.exec();
-}
 #endif
-int seq =0;
-
-void vizObstacle(vector<beliefstruct>&obstacles, ros::Publisher &pub )
-{
-
-    geometry_msgs::PoseArray msg;
-    msg.header.frame_id = "/obstacles";
-    msg.header.stamp= ros::Time::now();
-    msg.header.seq = seq++;
-    for(auto &o:obstacles)
-    {
-        geometry_msgs::Pose pose;
-        pose.position.x = o.x;
-        pose.position.y = o.y;
-        pose.position.z = o.prob;
-        msg.poses.push_back(pose);
-
-    }
-    pub.publish(msg);
-}
-
-void vizGroundTruth(vector<beliefstruct>&obstacles, ros::Publisher &pub )
-{
-
-    geometry_msgs::PoseArray msg;
-    msg.header.frame_id = "/ref";
-    msg.header.stamp= ros::Time::now();
-    msg.header.seq = seq++;
-    for(auto &o:obstacles)
-    {
-        geometry_msgs::Pose pose;
-        pose.position.x = o.x;
-        pose.position.y = o.y;
-        pose.position.z = o.prob;
-        msg.poses.push_back(pose);
-
-    }
-    pub.publish(msg);
-}
-void publishObstacles(vector<beliefstruct>&obstacles, vector<beliefstruct>&gt, ros::Publisher &pub )
-{
-
-    ros::Rate r(10);
-    int count = 0;
-    vizGroundTruth(gt,pub);
-    r.sleep();
-    vizObstacle(obstacles,pub);
-
-
-}
-
-
-void sendAction(int a)
-{
-// create the action client
-    // true causes the client to spin its own thread
-    actionlib::SimpleActionClient<tase_exp::fetchAction> ac("FetchMotionPremitives", true);
-
-    ROS_INFO("Waiting for action server to start.");
-    // wait for the action server to start
-    ac.waitForServer(); //will wait for infinite time
-
-    ROS_INFO("Action server started, sending goal.");
-    // send a goal to the action
-    tase_exp::fetchGoal goal;
-    goal.act = a;
-    ac.sendGoal(goal);
-
-    //wait for the action to return
-    bool finished_before_timeout = ac.waitForResult(ros::Duration(30.0));
-
-    if (finished_before_timeout)
-    {
-        actionlib::SimpleClientGoalState state = ac.getState();
-        ROS_INFO("Action finished: %s",state.toString().c_str());
-    }
-    else
-        ROS_INFO("Action did not finish before the time out.");
-
-}
-
 
 using namespace std;
 
@@ -129,16 +22,8 @@ int main(int argc, char *argv[]) {
 #ifdef GUI
     QApplication app(argc, argv);
 #endif
-
-    ros::init(argc, argv, "test_fetch_motions");
-    std::cout << "Policy, Checker!" << std::endl;
-//    assert(argc>=2 &&"folder path cannot found");
-    ros::NodeHandle nh;
-    ros::Publisher pub = nh.advertise<geometry_msgs::PoseArray>("/tase/obstacles",100);
-    string folderPath;
-    nh.getParam("/tase/policy/test_folder", folderPath);
-
-
+    FetchActionClient actionClient(argc,argv);
+    string folderPath = actionClient.getFolderPath();
     PolicyReader reader(folderPath);
     reader.readFiles();
 ////    std::cout<<reader<<endl;
@@ -148,15 +33,13 @@ int main(int argc, char *argv[]) {
 
     ValidatePolicy check(Goal,Gt);
     check.GetValidPolicy(reader.Policy);
+    vector<CPtrs>data;
     for (int j = 0; j < reader.Policy.size(); ++j) {
-        auto pi = reader.Policy[j][0];
-//        publishObstacles(pi->obstacles);
-        std::thread thread1(publishObstacles, std::ref(pi->obstacles), std::ref(Gt), std::ref(pub));
-        sendAction(pi->action);
-        thread1.join();
+        data.push_back(reader.Policy[j][0]);
 
     }
 
+    actionClient(data,Gt);
 //    PomdpPolicyChecker *PI;
 //
 //#ifdef SORT_POLICY

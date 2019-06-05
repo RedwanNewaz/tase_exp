@@ -8,20 +8,20 @@
 
 
 
-link_directories(/usr/local/lib)
+link_directories(ThirdParty/lib)
 
 set(HEADERS
         include/PolicyReader.h
         include/PomdpPolicyChecker.h
         include/ValidatePolicy.h
-        )
+        ../../include/FetchActionClient.h)
 set(SOURCES
         src/PolicyReader.cpp
         src/PomdpPolicyChecker.cpp
         src/ValidatePolicy.cpp
         )
 include_directories(
-        /usr/local/include
+        ThirdParty/include
         ${PROJECT_SOURCE_DIR}/examples/PolicyChecker/include
 
 )
