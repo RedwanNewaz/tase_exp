@@ -40,42 +40,6 @@ int main(int argc, char *argv[]) {
     }
 
     actionClient(data,Gt);
-//    PomdpPolicyChecker *PI;
-//
-//#ifdef SORT_POLICY
-//    BinaryTreeSort BTS(b_0);
-//    BTS.createTree(reader.Policy);
-////    BTS.printPolicy();
-//    PI= BTS.getLinkedList();
-//#else
-//    assert(argc>=3 &&"option cannot found");
-//    int option = atoi(argv[2]);
-//    for(auto &pi:reader.Policy)
-//    {
-////        cout << *pi.second[0] ;
-//        /* 1 & 2. allocate new node & put in the data  */
-//        auto node = new PomdpPolicy(pi.second[option]->action,pi.second[option]->robot);
-//        node->setObstacleBelief(pi.second[option]->obstacles);
-//        /* 3. Make next of new node as head */
-//        node->next = PI;
-//        /* 4. move the head to point to the new node */
-//        PI    = node;
-//    }
-//#endif
-//    cout <<"POMPD POLICY \n"<<endl;
-//    int result=0;
-//    while(PI)
-//    {
-//        cout<<*PI<< "\t\t<<<<!!!!>>>\t OBST: ";
-//        printVec(PI->getObstaclesBelief());
-//#ifdef GUI
-//        result = popUpMsg(PI->getState(), PI->nextActionName());
-//#endif
-//
-//        sendAction(PI->getAction());
-//        PI = PI->next;
-//        if(result == 4194304)break;
-//    }
 
     return 0;
 }
