@@ -1,0 +1,10 @@
+ACTION_MEANING[1]="Move north";
+ACTION_MEANING[2]="Move south";
+ACTION_MEANING[3]="Move west ";
+ACTION_MEANING[4]="Move east ";
+ACTION_MEANING[5]="Look north";
+ACTION_MEANING[6]="Look south";
+ACTION_MEANING[7]="Look west ";
+ACTION_MEANING[8]="Look east ";
+ACTION_MEANING[9]="Pick up left hand ";
+ACTION_MEANING[10]="Pick up right hand";
