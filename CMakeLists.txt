@@ -25,8 +25,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 
+
 include_directories(include
-        /home/redwan/ros/melodic/dev/devel/include
+        /home/ar103/ros/kinetic/system/devel/include
         examples/PolicyChecker/ThirdParty/include
 
         )

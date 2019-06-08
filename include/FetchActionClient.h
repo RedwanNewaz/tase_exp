@@ -16,7 +16,7 @@
 #include "geometry_msgs/Pose.h"
 #include "geometry_msgs/Point.h"
 
-#define GUI true
+//#define GUI true
 
 #ifdef GUI
 #include <QtCore>
@@ -51,12 +51,13 @@ public:
         int result =0;
         for (auto &plan:conditionalPlans)
         {
-            sendVizData(plan->obstacles,Gt);
+
 #ifdef GUI
             result = popUpMsg(plan->robot,ACTION_MEANING[plan->action]);
 #endif
             if(result == 4194304)break;
             sendAction(plan->action);
+            sendVizData(plan->obstacles,Gt);
         }
         return 1;
     }
@@ -64,6 +65,10 @@ public:
     template <class T>
     void sendVizData(vector<T> &obstacles, vector<T> &groundTruth)
     {
+        /**@brief
+         * sending obstacles and ground truth
+         *
+         */
         ros::Rate r(10);
         geometry_msgs::PoseArray obs_msg, gt_msg;
         pubVizMsg(groundTruth,gt_msg,"/ref");
