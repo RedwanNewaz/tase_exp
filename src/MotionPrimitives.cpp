@@ -3,7 +3,7 @@
 //
 
 #include "../include/MotionPrimitives.h"
-
+#define UNIT 0.90
 
 MotionPrimitives::MotionPrimitives() {
     std::string topic;
@@ -18,9 +18,9 @@ MotionPrimitives::MotionPrimitives() {
     pub_ = nh_.advertise<geometry_msgs::PoseStamped>(topic, 1000);
 
     look_[NORTH]= 0;
-    look_[SOUTH]= M_PI;
-    look_[WEST]= M_PI_2;
-    look_[EAST]= -M_PI_2;
+    look_[SOUTH]= 0;
+    look_[WEST]= UNIT;
+    look_[EAST]= -UNIT;
 
     std::string action_name = "head_controller/point_head";
     point_head_action_client_.reset(new point_head_action_client_t(action_name, true));
@@ -75,20 +75,45 @@ void MotionPrimitives::lookAt(int z) {
     ros::Rate r(1/float(nap_rate_));
     r.sleep();
 
-    OBS_TYPE u = static_cast<OBS_TYPE >(z);
-    float q = look_[u];
+
+    
     control_msgs::PointHeadGoal point_head_goal;
     point_head_goal.target.header.stamp = ros::Time::now();
     point_head_goal.target.header.frame_id = "base_link";
-    point_head_goal.target.point.x = 0;
-    point_head_goal.target.point.y = q;
-    point_head_goal.target.point.z = M_PI_2*pitch_;
+    z -=5;
+    std::cout << "u: " << z << std::endl;
+    if(z==0)
+    {
+        ROS_INFO("looking at north");
+        point_head_goal.target.point.x = 1.0;
+        point_head_goal.target.point.y = 0.0;
+        point_head_goal.target.point.z = 0.6;
+    }
+    else if(z==1){
+        ROS_INFO("looking at south");
+        point_head_goal.target.point.x = 0.0;
+        point_head_goal.target.point.y = 0.0;
+        point_head_goal.target.point.z = 0.0;
+    }
+    else if(z==2) // west
+    {
+        ROS_INFO("looking at west");
+        point_head_goal.target.point.x = 0.0;
+        point_head_goal.target.point.y = 1.0;
+        point_head_goal.target.point.z = 0.6;
+    }else if(z==3) //east
+    {
+        ROS_INFO("looking at east");
+        point_head_goal.target.point.x = 0.0;
+        point_head_goal.target.point.y = -1.0;
+        point_head_goal.target.point.z = 0.6;
+    }
     point_head_goal.min_duration = ros::Duration(1.0);
 
     point_head_action_client_->sendGoal(point_head_goal);
     bool result = point_head_action_client_->waitForResult(ros::Duration(5.0));
     if(!result) lookAt(z);
-    if(u != NORTH) lookAt(NORTH);
+    if(z != 0) lookAt(5);
 
 
 
@@ -139,20 +164,35 @@ void MotionPrimitives::publishGoal() {
 
 
 
-void MotionPrimitives::localizationCallback(const geometry_msgs::TransformStamped::ConstPtr &msg) {
+void MotionPrimitives::localizationCallback(const nav_msgs::Odometry::ConstPtr &msg) {
 
     std::lock_guard<std::mutex>lk(mu);
-    auto p = msg->transform.translation;
+    auto p = msg->pose.pose.position;
 
     robot_position[0] = p.x ;
     robot_position[1] = p.y ;
     robot_position[2] = p.z ;
-    robot_orientation = msg->transform.rotation;
+    //robot_orientation = msg->transform.rotation;
 
-    std::call_once(fix_origin_, [&](){ oX = p.x; oY = p.y; });
+    //std::call_once(fix_origin_, [&](){ oX = p.x; oY = p.y; });
 
+    //=======================================================================
+    // Transform from map to odom
+    //=======================================================================
+    double useless_pitch, useless_roll, yaw;
+    ros::Time t;
+    std::string err2 = "";
+    tf::StampedTransform tf_odom_to_fixed;
+    tf_listener_.getLatestCommonTime("odom", "map", t, &err2);
+    tf_listener_.lookupTransform("odom", "map", t, tf_odom_to_fixed);
+    tf_odom_to_fixed.getBasis().getEulerYPR(yaw, useless_pitch, useless_roll);
 
-    double psi = tf2::getYaw(msg->transform.rotation);
+    tf::Point goal_point_map_frame(robot_position[0], robot_position[1], 0.0);
+    goal_point_map_frame = tf_odom_to_fixed.inverse() * goal_point_map_frame;
+    p.x = goal_point_map_frame.getX();
+    p.y = goal_point_map_frame.getY();
+
+    //double psi = tf2::getYaw(msg->transform.rotation);
 
     float err =sqrt(pow((p.x-setX),2)+pow((p.y-setY),2));
     if(err<xy_tolarance_)

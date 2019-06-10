@@ -16,7 +16,7 @@
 #include "geometry_msgs/Pose.h"
 #include "geometry_msgs/Point.h"
 
-//#define GUI true
+#define GUI true
 
 #ifdef GUI
 #include <QtCore>

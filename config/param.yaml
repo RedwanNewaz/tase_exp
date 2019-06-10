@@ -6,12 +6,12 @@ policy:
   policy_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/policy.txt"
   belief_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/belief.txt"
   test_file: "/home/redwan/ros/melodic/dev/src/tase_exp/result/corridor_test_11"
-  test_folder : "/home/ar103/ros/kinetic/system/src/tase_exp/config/Data/rss2"
+  test_folder : "/home/redwan/ros/melodic/system/src/tase_exp/config/Data/p_3"
 topic_pub:
-  vicon: "/vicon/fetch/fetch"
+  vicon: "/odometry/filtered"
   goal: "/fetch_move_base_planner/query_goal"
   repeat: 3
 move_base:
-  xy_tolarance: 0.20
-  pitch: 0.62
-  nap_rate: 5
+  xy_tolarance: 0.22
+  pitch: 1.01
+  nap_rate: 3

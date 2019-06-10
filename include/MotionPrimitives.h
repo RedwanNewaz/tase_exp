@@ -14,10 +14,15 @@
 #include <ros/ros.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Odometry.h>
 #include <actionlib/client/simple_action_client.h>
 #include <control_msgs/PointHeadAction.h>
 #include <control_msgs/PointHeadGoal.h>
 //#include <move_base_msgs/MoveBaseAction.h>
+
+// ROS tf
+#include <tf/message_filter.h>
+#include <tf/transform_listener.h>
 
 #include "StateEstimator.h"
 
@@ -34,7 +39,7 @@ public:
 
     virtual ~MotionPrimitives();
 
-    void localizationCallback(const geometry_msgs::TransformStamped::ConstPtr &msg);
+    void localizationCallback(const nav_msgs::Odometry::ConstPtr &msg);
 
     // Go to target location
     void goTo(double x, double y);
@@ -44,6 +49,7 @@ public:
 
 
 private:
+    tf::TransformListener tf_listener_;
     double yaw, setX, setY, oX,oY;
     float pitch_, xy_tolarance_;
     int nap_rate_, repeat_;

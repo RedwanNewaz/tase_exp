@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning
   moveit_ros_planning_interface
   pluginlib
+  tf
   tf2
   tf2_eigen
   tf2_ros
@@ -27,7 +28,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 
 include_directories(include
-        /home/ar103/ros/kinetic/system/devel/include
+        /home/redwan/ros/melodic/system/devel/include
         examples/PolicyChecker/ThirdParty/include
 
         )
@@ -98,7 +99,7 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_node ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 add_subdirectory(examples/PolicyChecker)
